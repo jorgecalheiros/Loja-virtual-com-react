@@ -1,9 +1,12 @@
+import Footer from "../Components/Public/Footer";
+import Header from "../Components/Public/Header";
+
 function PublicLayout({ children }) {
     return (
         <div>
-            <h2>Header</h2>
+            <Header />
             {children}
-            <h2>Footer</h2>
+            <Footer />
         </div>
     )
 }
