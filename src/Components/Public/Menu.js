@@ -4,7 +4,7 @@ import CardCategoria from "./CardCategoria";
 
 function Menu({ obj }) {
     return (
-        <aside className="container w-25 m-0">
+        <aside className="container w-25 --d-sm-none">
             <div className="card">
                 <div className="card-body">
                     <NavLink to={"/"} className={"card-link"}>
