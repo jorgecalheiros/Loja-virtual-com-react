@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.--mr-5{
+  margin-right: 5px;
+}
+
 @media screen and (max-width:500px) {
   .--d-sm-none{
     display: none;

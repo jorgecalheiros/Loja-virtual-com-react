@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 function CardProduto({ obj }) {
     return (
         <div className="card mx-lg-1 mb-1 flex-grow-1 --w-md-25 ">
-            <NavLink to={"/"} className="text-reset text-decoration-none">
+            <NavLink to={"/produto/1"} className="text-reset text-decoration-none">
                 <img src="..." className="card-img-cap" alt="..." />
                 <div className="card-body">
                     <h5 className="card-title">Nome produto</h5>
