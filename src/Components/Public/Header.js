@@ -16,7 +16,7 @@ function Header() {
                     </button>
                 </div>
             </div>
-            <div class="bg-dark collapse" id="header">
+            <div class="bg-dark collapse py-2" id="header">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-md-7 py-4">
@@ -41,6 +41,23 @@ function Header() {
                                     <a href="#" class="text-white">Email</a>
                                 </li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="d-flex flex-wrap align-items-center justify-content-center">
+                        <ul className="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                            <li>
+                                <NavLink to={"/"} className="nav-link px-2 text-white">
+                                    Home
+                                </NavLink>
+                            </li>
+                        </ul>
+                        <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                            <input type={"search"} className="form-control form-control-dark" placeholder="Pesquise..." aria-label="Search" />
+                        </form>
+                        <div className="text-end">
+                            <button type="button" className="btn btn-outline-light me-2">Pesquisar</button>
                         </div>
                     </div>
                 </div>
