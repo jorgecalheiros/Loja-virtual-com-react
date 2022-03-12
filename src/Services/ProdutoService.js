@@ -11,6 +11,15 @@ class ProdutoService {
         }
     }
 
+    async show(id) {
+        try {
+            const response = await Api.get(`/api/produtos/${id}`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
     async create(data) {
         try {
             const response = await Api.post("/api/produtos", data);

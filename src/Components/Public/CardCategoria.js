@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
 
-function CardCategoria() {
+function CardCategoria({ obj }) {
     return (
         <li className="list-group-item">
-            <NavLink to={"/"} className={"card-link"}>
-                Exemplo categoria
+            <NavLink to={"/?categoria=" + obj.slug} className={"card-link"}>
+                {obj.nome}
             </NavLink>
-        </li>
+        </li >
     )
 }
 export default CardCategoria;
