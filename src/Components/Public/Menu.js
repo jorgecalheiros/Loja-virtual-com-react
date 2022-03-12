@@ -1,8 +1,23 @@
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 
+import CategoriaService from "../../Services/CategoriaService";
 import CardCategoria from "./CardCategoria";
 
 function Menu({ obj }) {
+    const [categorias, setCategorias] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const [data, error] = await CategoriaService.index();
+
+            if (!error) {
+                const categorias = data.list.data;
+                setCategorias(categorias);
+            }
+        }
+        fetchData();
+    }, [])
     return (
         <aside className="container w-25 --d-sm-none">
             <div className="card">
@@ -12,7 +27,11 @@ function Menu({ obj }) {
                     </NavLink>
                 </div>
                 <ul className="list-group list-group-flush">
-                    <CardCategoria />
+                    {
+                        categorias.map((categoria, key) => {
+                            return <CardCategoria obj={categoria} key={key} />
+                        })
+                    }
                 </ul>
             </div>
         </aside>

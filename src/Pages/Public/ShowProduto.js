@@ -1,12 +1,27 @@
+import { useEffect, useState } from "react";
+
 import PublicLayout from "../../Layouts/PublicLayout";
+import ProdutoService from "../../Services/ProdutoService";
 import { NavLink, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 
 function ShowProduto() {
-
+    const [produto, setProduto] = useState({});
     const { idProduto } = useParams();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const [data, error] = await ProdutoService.show(idProduto);
+
+            if (!error) {
+                const produto = data.produto;
+                setProduto(produto);
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
         <PublicLayout>
@@ -17,10 +32,15 @@ function ShowProduto() {
                 <div className="card my-2">
                     <img src="..." className="card-img-top" alt="..." />
                     <div className="card-body">
-                        <h5 className="card-title">Nome do produto</h5>
+                        <h5 className="card-title">{produto.nome}</h5>
                         <p className="card-text">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                            {produto.descricao}
                         </p>
+                    </div>
+                    <div className="card-body">
+                        <span className="btn btn-primary">
+                            {produto.preco}R$
+                        </span>
                     </div>
                     <div className="card-body">
                         <span className="btn btn-secondary --mr-5">
