@@ -2,9 +2,9 @@ import Api from "./Api";
 
 
 class ProdutoService {
-    async index() {
+    async index(page) {
         try {
-            const response = await Api.get("/api/produtos");
+            const response = await Api.get(`/api/produtos?page=${page}`);
             return [response.data, false];
         } catch (error) {
             return [null, error];
