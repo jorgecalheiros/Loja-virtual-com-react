@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import CategoriaService from "../../Services/CategoriaService";
 import CardCategoria from "./CardCategoria";
 
-function Menu({ obj }) {
+function Menu() {
     const [categorias, setCategorias] = useState([]);
 
     useEffect(() => {
