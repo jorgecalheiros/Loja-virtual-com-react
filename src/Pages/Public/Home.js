@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
+import { useLocation } from "react-router";
 
 import ProdutoService from "../../Services/ProdutoService";
 import CardProduto from "../../Components/Public/CardProduto";
 import Menu from "../../Components/Public/Menu";
 import PublicLayout from "../../Layouts/PublicLayout";
 
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 function Home() {
     const [produtos, setProdutos] = useState([]);
     const [configRequest, setConfigRequest] = useState({});
-
-    useEffect(() => {
-        const fetchData = async (page = 1) => {
-            const [data, error] = await ProdutoService.index(page);
-
-            if (!error) {
-                const produtos = data.list.data;
-                setConfigRequest(data.list);
-                setProdutos(produtos);
-            }
+    const query = useQuery();
+    let categoria = query.get("categoria");
+    const buildParam = (page = 1) => {
+        if (categoria != null) {
+            return `page=${page}&categoria=${categoria}`;
         }
-        fetchData();
-    }, []);
-    const changePage = async (page = 1) => {
-        const [data, error] = await ProdutoService.index(page);
+        return `page=${page}`;
+    }
+    const getProdutosByCategoria = async () => {
+        let param = buildParam();
+        const [data, error] = await ProdutoService.index(param);
+
+        if (!error) {
+            setProdutos(data.list.data);
+            setConfigRequest(data.list);
+        }
+    }
+    const changePage = async (number) => {
+        let param = buildParam(number);
+        const [data, error] = await ProdutoService.index(param);
 
         if (!error) {
             const produtos = data.list.data;
@@ -31,6 +43,7 @@ function Home() {
             setProdutos(produtos);
         }
     }
+    useEffect(getProdutosByCategoria, [categoria]);
     const { current_page, per_page, total } = configRequest;
     return (
         <PublicLayout>
