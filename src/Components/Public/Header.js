@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTshirt } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
-function Header() {
+function Header({ infoObj }) {
     return (
         <header>
 
@@ -53,12 +53,20 @@ function Header() {
                                 </NavLink>
                             </li>
                         </ul>
-                        <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                            <input type={"search"} className="form-control form-control-dark" placeholder="Pesquise..." aria-label="Search" />
-                        </form>
-                        <div className="text-end">
-                            <button type="button" className="btn btn-outline-light me-2">Pesquisar</button>
-                        </div>
+                        {infoObj &&
+
+                            <>
+                                <div className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                                    <input type={"search"} className="form-control form-control-dark" placeholder="Pesquise..." aria-label="Search" onChange={infoObj.header.functionOnChangeInputPesquisa} />
+                                </div>
+                                <div className="text-end">
+                                    <NavLink to={infoObj.header.rotaPesquisa} className={"btn btn-outline-light me-2"}>
+                                        Pesquisar
+                                    </NavLink>
+                                </div>
+                            </>
+
+                        }
                     </div>
                 </div>
             </div>

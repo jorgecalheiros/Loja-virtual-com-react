@@ -1,10 +1,10 @@
 import Footer from "../Components/Public/Footer";
 import Header from "../Components/Public/Header";
 
-function PublicLayout({ children }) {
+function PublicLayout({ children, infoObj }) {
     return (
         <div>
-            <Header />
+            <Header infoObj={infoObj} />
             {children}
             <Footer />
         </div>
