@@ -16,14 +16,26 @@ function useQuery() {
 function Home() {
     const [produtos, setProdutos] = useState([]);
     const [configRequest, setConfigRequest] = useState({});
+    const [pesquisaValue, setPesquisaValue] = useState(null);
     const query = useQuery();
-    let categoria = query.get("categoria");
+    const categoria = query.get("categoria");
+    const pesquisa = query.get("pesquisa");
 
+    const handleInputPesquisa = (event) => {
+        const { value } = event.target;
+        setPesquisaValue(value);
+    }
     const buildParam = (page = 1) => {
-        if (categoria != null) {
-            return `page=${page}&categoria=${categoria}`;
+        let param = `page=${page}`;
+
+        if (categoria) {
+            param += `&categoria=${categoria}`;
         }
-        return `page=${page}`;
+        if (pesquisa) {
+            param += `&s=${pesquisa}`;
+        }
+        return param;
+
     }
     const getProdutosByCategoria = async () => {
         let param = buildParam();
@@ -44,10 +56,16 @@ function Home() {
             setProdutos(produtos);
         }
     }
-    useEffect(getProdutosByCategoria, [categoria]);
+    useEffect(getProdutosByCategoria, [categoria, pesquisa]);
     const { current_page, per_page, total } = configRequest;
+    const infoObj = {
+        header: {
+            rotaPesquisa: `?pesquisa=${pesquisaValue ? pesquisaValue : ""}`,
+            functionOnChangeInputPesquisa: handleInputPesquisa
+        }
+    }
     return (
-        <PublicLayout>
+        <PublicLayout infoObj={infoObj}>
             <div className="d-flex container  justify-content-between my-5">
                 <div className="container d-md-flex flex-wrap">
                     {
