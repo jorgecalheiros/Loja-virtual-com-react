@@ -6,6 +6,7 @@ import ProdutoService from "../../Services/ProdutoService";
 import AdmLayout from "../../Layouts/AdmLayout";
 import CardProdutoAdmin from "../../Components/Admin/CardProduto";
 import { NavLink } from "react-router-dom";
+import InputSearch from "../../Components/InputSearch";
 
 
 function useQuery() {
@@ -15,14 +16,22 @@ function useQuery() {
 function ProdutosAdmin() {
     const [produtos, setProdutos] = useState([]);
     const [configs, setConfig] = useState({});
+    const [pesquisa, setPesquisa] = useState(null);
+
     const query = useQuery();
     const categoria = query.get("categoria");
+    const pesquisaValue = query.get("pesquisa");
 
     const builParam = (page = 1) => {
-        if (categoria) {
-            return `page=${page}&categoria=${categoria}`;
+        let param = `page=${page}`;
+
+        if (pesquisa) {
+            param += `&s=${pesquisaValue}`;
         }
-        return `page=${page}`;
+        if (categoria) {
+            param += `&categoria=${categoria}`;
+        }
+        return param;
     }
     const getByCategoria = async () => {
         const param = builParam();
@@ -33,7 +42,7 @@ function ProdutosAdmin() {
             setConfig(data.list);
         }
     }
-    useEffect(getByCategoria, [categoria]);
+    useEffect(getByCategoria, [categoria, pesquisaValue]);
     const changePage = async (page) => {
         const param = builParam(page);
         const [data, error] = await ProdutoService.index(param);
@@ -43,6 +52,10 @@ function ProdutosAdmin() {
             setConfig(data.list);
         }
     }
+    const handleInputPesquisa = (event) => {
+        const { value } = event.target;
+        setPesquisa(value);
+    }
     const { current_page, per_page, total } = configs;
     return (
         <AdmLayout>
@@ -50,7 +63,9 @@ function ProdutosAdmin() {
                 <NavLink to={"/admin/create/produto"} className={"btn btn-primary"}>
                     Cadastrar produto
                 </NavLink>
+                <InputSearch placeholder={"Pesquise..."} button={"Buscar"} url={`/admin/produtos?pesquisa=${pesquisa ? pesquisa : ""}`} onChange={handleInputPesquisa} />
             </div >
+            <hr />
             <table className="table container">
                 <thead>
                     <tr>
