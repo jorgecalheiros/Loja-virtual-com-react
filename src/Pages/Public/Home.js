@@ -18,6 +18,7 @@ function Home() {
     const [configRequest, setConfigRequest] = useState({});
     const query = useQuery();
     let categoria = query.get("categoria");
+
     const buildParam = (page = 1) => {
         if (categoria != null) {
             return `page=${page}&categoria=${categoria}`;
