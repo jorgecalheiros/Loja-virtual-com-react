@@ -46,10 +46,9 @@ function ProdutosAdmin() {
         }
     }
     const getCategorias = async () => {
-        let param = "page=1";
-        const [data, error] = await CategoriaService.index(param);
+        const [data, error] = await CategoriaService.getAll();
         if (!error) {
-            setCategorias(data.list.data);
+            setCategorias(data.list);
         }
     }
     useEffect(getCategorias, []);
@@ -85,7 +84,7 @@ function ProdutosAdmin() {
                             Escolha uma categoria
                         </option>
                         <option value={""} >
-                            Sem categoria
+                            Todas as categorias
                         </option>
                         {
                             categorias.map((categoria, index) => {
