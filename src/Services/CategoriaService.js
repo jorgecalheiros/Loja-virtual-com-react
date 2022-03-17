@@ -11,6 +11,15 @@ class CategoriaService {
         }
     }
 
+    async getAll() {
+        try {
+            const response = await Api.get("/api/categorias/listAllCategories/1");
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
     async show(id) {
         try {
             const response = await Api.get(`/api/categorias/${id}`);

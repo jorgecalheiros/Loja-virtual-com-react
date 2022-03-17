@@ -3,6 +3,7 @@ import { useLocation } from "react-router"
 import Pagination from "react-js-pagination";
 
 import ProdutoService from "../../Services/ProdutoService";
+import CategoriaService from "../../Services/CategoriaService";
 import AdmLayout from "../../Layouts/AdmLayout";
 import CardProdutoAdmin from "../../Components/Admin/CardProduto";
 import { NavLink } from "react-router-dom";
@@ -17,6 +18,8 @@ function ProdutosAdmin() {
     const [produtos, setProdutos] = useState([]);
     const [configs, setConfig] = useState({});
     const [pesquisa, setPesquisa] = useState(null);
+    const [categoriaInput, setCategoriaValue] = useState(null);
+    const [categorias, setCategorias] = useState([]);
 
     const query = useQuery();
     const categoria = query.get("categoria");
@@ -33,7 +36,7 @@ function ProdutosAdmin() {
         }
         return param;
     }
-    const getByCategoria = async () => {
+    const getProdutos = async () => {
         const param = builParam();
         const [data, error] = await ProdutoService.index(param);
 
@@ -42,7 +45,14 @@ function ProdutosAdmin() {
             setConfig(data.list);
         }
     }
-    useEffect(getByCategoria, [categoria, pesquisaValue]);
+    const getCategorias = async () => {
+        const [data, error] = await CategoriaService.getAll();
+        if (!error) {
+            setCategorias(data.list);
+        }
+    }
+    useEffect(getCategorias, []);
+    useEffect(getProdutos, [categoria, pesquisaValue]);
     const changePage = async (page) => {
         const param = builParam(page);
         const [data, error] = await ProdutoService.index(param);
@@ -51,6 +61,10 @@ function ProdutosAdmin() {
             setProdutos(data.list.data);
             setConfig(data.list);
         }
+    }
+    const handleInputCategoria = (event) => {
+        const { value } = event.target;
+        setCategoriaValue(value);
     }
     const handleInputPesquisa = (event) => {
         const { value } = event.target;
@@ -64,6 +78,28 @@ function ProdutosAdmin() {
                     Cadastrar produto
                 </NavLink>
                 <InputSearch placeholder={"Pesquise..."} button={"Buscar"} url={`/admin/produtos?pesquisa=${pesquisa ? pesquisa : ""}`} onChange={handleInputPesquisa} />
+                <div className="input-group mb-3 my-2 w-25">
+                    <select className="form-control" onChange={handleInputCategoria}>
+                        <option selected hidden value={""}>
+                            Escolha uma categoria
+                        </option>
+                        <option value={""} >
+                            Todas as categorias
+                        </option>
+                        {
+                            categorias.map((categoria, index) => {
+                                return (
+                                    <option value={categoria.slug} key={index}>
+                                        {categoria.nome}
+                                    </option>
+                                )
+                            })
+                        }
+                    </select>
+                    <NavLink to={`?categoria=${categoriaInput ? categoriaInput : ""}`} className={"btn btn-primary"}>
+                        Buscar
+                    </NavLink>
+                </div>
             </div >
             <hr />
             <table className="table container">

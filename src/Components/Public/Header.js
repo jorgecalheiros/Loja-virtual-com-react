@@ -6,21 +6,21 @@ function Header() {
     return (
         <header>
 
-            <div class="navbar navbar-dark bg-dark box-shadow">
-                <div class="container d-flex justify-content-between">
+            <div className="navbar navbar-dark bg-dark box-shadow">
+                <div className="container d-flex justify-content-between">
                     <NavLink to={"/"} className="navbar-brand d-flex align-items-center">
-                        <FontAwesomeIcon icon={faTshirt} /><strong class="px-2">Loja Virtual</strong>
+                        <FontAwesomeIcon icon={faTshirt} /><strong className="px-2">Loja Virtual</strong>
                     </NavLink>
-                    <button class="navbar-toggler collapsed" data-bs-toggle="collapse" type="button" data-bs-target="#header">
-                        <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler collapsed" data-bs-toggle="collapse" type="button" data-bs-target="#header">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
                 </div>
             </div>
-            <div class="bg-dark collapse py-2" id="header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-8 col-md-7 py-4">
-                            <h4 class="text-white">
+            <div className="bg-dark collapse py-2" id="header">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-8 col-md-7 py-4">
+                            <h4 className="text-white">
                                 Aviso...
                             </h4>
                             <p className="text-white">
@@ -28,17 +28,17 @@ function Header() {
                                 incomede entre em contato conosco
                             </p>
                         </div>
-                        <div class="col-sm-4 offset-md-1 py-4">
-                            <h4 class="text-white">Contato</h4>
-                            <ul class="list-unstyle">
+                        <div className="col-sm-4 offset-md-1 py-4">
+                            <h4 className="text-white">Contato</h4>
+                            <ul className="list-unstyle">
                                 <li>
-                                    <a href="#" class="text-white">Twitter</a>
+                                    <a href="#" className="text-white">Twitter</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="text-white">Facebook</a>
+                                    <a href="#" className="text-white">Facebook</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="text-white">Email</a>
+                                    <a href="#" className="text-white">Email</a>
                                 </li>
                             </ul>
                         </div>
