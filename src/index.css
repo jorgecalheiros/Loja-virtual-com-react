@@ -11,9 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+.--h-auto{
+  height: 968px;
+}
+.--h-25{
+  height: 50px;
+  overflow: hidden;
+}
 .--mr-5{
   margin-right: 5px;
+}
+.--w-280px{
+  width: 280px;
 }
 
 @media screen and (max-width:500px) {

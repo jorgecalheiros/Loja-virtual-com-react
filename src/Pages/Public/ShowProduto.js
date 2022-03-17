@@ -30,7 +30,7 @@ function ShowProduto() {
                     <FontAwesomeIcon icon={faArrowAltCircleLeft} size="2x" />
                 </NavLink>
                 <div className="card my-2">
-                    <img src="..." className="card-img-top" alt="..." />
+                    <img src={`http://localhost:8000/api/produtos/image/${produto.foto}`} className="card-img-top" alt="..." />
                     <div className="card-body">
                         <h5 className="card-title">{produto.nome}</h5>
                         <p className="card-text">

@@ -2,9 +2,18 @@ import Api from "./Api";
 
 
 class CategoriaService {
-    async index() {
+    async index(param) {
         try {
-            const response = await Api.get("/api/categorias");
+            const response = await Api.get(`/api/categorias?${param}`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
+    async show(id) {
+        try {
+            const response = await Api.get(`/api/categorias/${id}`);
             return [response.data, false];
         } catch (error) {
             return [null, error];

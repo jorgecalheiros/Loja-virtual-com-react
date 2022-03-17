@@ -31,7 +31,7 @@ class ProdutoService {
 
     async update(id, data) {
         try {
-            const response = await Api.put(`api/produtos/${id}`, data);
+            const response = await Api.put(`/api/produtos/${id}`, data);
             return [response.data, false];
         } catch (error) {
             return [null, error];
