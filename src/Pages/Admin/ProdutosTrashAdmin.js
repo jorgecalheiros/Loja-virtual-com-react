@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react"
-import { useLocation } from "react-router"
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import Pagination from "react-js-pagination";
+import $ from "jquery";
 
 import ProdutoService from "../../Services/ProdutoService";
-import CategoriaService from "../../Services/CategoriaService";
 import AdmLayout from "../../Layouts/AdmLayout";
 import CardProdutoAdmin from "../../Components/Admin/CardProduto";
 import { NavLink } from "react-router-dom";
+import CategoriaService from "../../Services/CategoriaService";
 import InputSearch from "../../Components/InputSearch";
 
 
@@ -14,7 +15,7 @@ function useQuery() {
     const { search } = useLocation();
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
-function ProdutosAdmin() {
+function ProdutosTrashAdmin() {
     const [produtos, setProdutos] = useState([]);
     const [configs, setConfig] = useState({});
     const [pesquisa, setPesquisa] = useState(null);
@@ -36,9 +37,9 @@ function ProdutosAdmin() {
         }
         return param;
     }
-    const getProdutos = async () => {
+    const getProdutosExcluidos = async () => {
         const param = builParam();
-        const [data, error] = await ProdutoService.index(param);
+        const [data, error] = await ProdutoService.getTrashed(param);
 
         if (!error) {
             setProdutos(data.list.data);
@@ -52,10 +53,19 @@ function ProdutosAdmin() {
         }
     }
     useEffect(getCategorias, []);
-    useEffect(getProdutos, [categoria, pesquisaValue]);
+    useEffect(getProdutosExcluidos, [categoria, pesquisaValue]);
+
+    const restoreProduto = async (event) => {
+        const id = $(event.target).attr("produto-restore");
+        const [data, error] = await ProdutoService.restore(id);
+        if (!error) {
+            alert("Produto restaurado com sucesso!");
+            getProdutosExcluidos();
+        }
+    }
     const changePage = async (page) => {
         const param = builParam(page);
-        const [data, error] = await ProdutoService.index(param);
+        const [data, error] = await ProdutoService.getTrashed(param);
 
         if (!error) {
             setProdutos(data.list.data);
@@ -71,13 +81,13 @@ function ProdutosAdmin() {
         setPesquisa(value);
     }
     const { current_page, per_page, total } = configs;
+    const infoObj = {
+        funcaoRestauraProduto: restoreProduto
+    }
     return (
         <AdmLayout>
             <div className="container my-2 px-1">
-                <NavLink to={"/admin/create/produto"} className={"btn btn-primary"}>
-                    Cadastrar produto
-                </NavLink>
-                <InputSearch placeholder={"Pesquise..."} button={"Buscar"} url={`/admin/produtos?pesquisa=${pesquisa ? pesquisa : ""}`} onChange={handleInputPesquisa} />
+                <InputSearch placeholder={"Pesquise..."} button={"Buscar"} url={`/admin/lixeira?pesquisa=${pesquisa ? pesquisa : ""}`} onChange={handleInputPesquisa} />
                 <div className="input-group mb-3 my-2 w-25">
                     <select className="form-control" onChange={handleInputCategoria}>
                         <option selected hidden value={""}>
@@ -116,7 +126,7 @@ function ProdutosAdmin() {
                 </thead>
                 <tbody>
                     {
-                        produtos.map((produto, index) => <CardProdutoAdmin produto={produto} key={index} />)
+                        produtos.map((produto, index) => <CardProdutoAdmin produto={produto} infoObj={infoObj} key={index} />)
                     }
                 </tbody>
             </table>
@@ -136,4 +146,4 @@ function ProdutosAdmin() {
     )
 }
 
-export default ProdutosAdmin;
+export default ProdutosTrashAdmin;
