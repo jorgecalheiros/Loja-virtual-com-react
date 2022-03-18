@@ -11,6 +11,15 @@ class ProdutoService {
         }
     }
 
+    async getTrashed(params) {
+        try {
+            const response = await Api.get(`/api/produtos/onlytrashed/0?${params}`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
     async show(id) {
         try {
             const response = await Api.get(`/api/produtos/${id}`);
@@ -41,6 +50,15 @@ class ProdutoService {
     async destroy(id) {
         try {
             const response = await Api.delete(`/api/produtos/${id}`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
+    async restore(id) {
+        try {
+            const response = await Api.get(`/api/produtos/restore/${id}`);
             return [response.data, false];
         } catch (error) {
             return [null, error];
