@@ -17,6 +17,7 @@ function ShowProduto() {
         entregarEmCasa: false,
         nome: "",
         sobrenome: "",
+        email: "",
         rua: "",
         numero: "",
         bairro: "",
@@ -68,6 +69,7 @@ function ShowProduto() {
         const cardDeCompra = $("#div-card-compra");
         cardDeCompra.addClass("d-none");
     }
+    console.log(InputCompra);
     return (
         <PublicLayout>
             <div className="container my-5 d-flex justify-content-center">
@@ -130,7 +132,7 @@ function ShowProduto() {
                             </div>
                             <div className="mb-3">
                                 <label for={"email"} className={"form-label"}>Email: </label>
-                                <input id="email" type={"email"} className="form-control" onChange={handleInputCompra} />
+                                <input id="email" name="email" type={"email"} className="form-control" onChange={handleInputCompra} />
                             </div>
                         </section>
                         <hr />
