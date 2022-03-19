@@ -11,6 +11,7 @@ import ProdutosAdmin from "../Pages/Admin/ProdutosAdmin";
 import CategoriasAdmin from "../Pages/Admin/CategoriasAdmin";
 import CreateUpdateCategoria from "../Pages/Admin/CreateUpdateCategoria";
 import ShowProdutoAdmin from "../Components/Admin/ShowProdutoAdmin";
+import ProdutosTrashAdmin from "../Pages/Admin/ProdutosTrashAdmin";
 
 
 function Router() {
@@ -24,6 +25,7 @@ function Router() {
             <Route path="/admin/create/produto" element={<CreateUpdateProdutos title={"Cadastrar produto"} button={"Cadastrar"} />} />
             <Route path="/admin/update/produto/:idProduto" element={<CreateUpdateProdutos title={"Alterar produto"} button={"Alterar"} />} />
             <Route path="/admin/produtos" element={<ProdutosAdmin />} />
+            <Route path="/admin/lixeira" element={<ProdutosTrashAdmin />} />
             <Route path="/admin/produto/:idProduto" element={<ShowProdutoAdmin />} />
             <Route path="/admin/categorias" element={<CategoriasAdmin />} />
             <Route path="/admin/create/categoria" element={<CreateUpdateCategoria title={"Cadastrar categoria"} button={"Cadastrar"} />} />

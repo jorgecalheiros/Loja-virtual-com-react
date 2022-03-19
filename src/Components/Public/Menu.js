@@ -9,10 +9,10 @@ function Menu() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const [data, error] = await CategoriaService.index();
+            const [data, error] = await CategoriaService.getAll();
 
             if (!error) {
-                const categorias = data.list.data;
+                const categorias = data.list;
                 setCategorias(categorias);
             }
         }

@@ -25,6 +25,11 @@ function SideBar() {
                         Categorias
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink to={"/admin/lixeira"} className={"nav-link text-white"}>
+                        Lixeira
+                    </NavLink>
+                </li>
             </ul>
         </div >
     )

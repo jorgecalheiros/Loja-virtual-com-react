@@ -11,6 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.--h-450px::-webkit-scrollbar{
+  width: 10px;
+}
+.--h-450px{
+  height: 480px;
+}
 .--h-auto{
   height: 968px;
 }

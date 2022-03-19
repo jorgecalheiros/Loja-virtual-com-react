@@ -4,7 +4,16 @@ import Api from "./Api";
 class CategoriaService {
     async index(param) {
         try {
-            const response = await Api.get(`/api/categorias?${param}`);
+            const response = await Api.get(`/api/categorias?&${param}`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
+    async getAll() {
+        try {
+            const response = await Api.get("/api/categorias/listAllCategories/1");
             return [response.data, false];
         } catch (error) {
             return [null, error];
