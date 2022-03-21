@@ -30,6 +30,11 @@ function SideBar() {
                         Lixeira
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink to={"/admin/registros"} className={"nav-link text-white"}>
+                        Registros
+                    </NavLink>
+                </li>
             </ul>
         </div >
     )

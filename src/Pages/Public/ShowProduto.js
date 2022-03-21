@@ -7,11 +7,13 @@ import { NavLink, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import RegistroService from "../../Services/RegistroService";
 
 function ShowProduto() {
     const [produto, setProduto] = useState({});
+    const { idProduto } = useParams();
     const [InputCompra, setInputCompra] = useState({
-        produto: "",
+        idProduto: idProduto,
         quantidade: 1,
         precoTotal: "",
         entregarEmCasa: false,
@@ -29,6 +31,13 @@ function ShowProduto() {
         nomeCartao: "",
         validadeCartao: ""
     })
+
+    const fetchCreate = async (dataForm) => {
+        const [data, error] = await RegistroService.create(dataForm);
+        if (!error) {
+            return true;
+        }
+    }
     const handleInputCompra = (event) => {
         const { name, value, checked, type } = event.target;
         if (type == "checkbox") {
@@ -44,7 +53,6 @@ function ShowProduto() {
         }
 
     }
-    const { idProduto } = useParams();
     useEffect(() => {
         const fetchData = async () => {
             const [data, error] = await ProdutoService.show(idProduto);
@@ -58,7 +66,7 @@ function ShowProduto() {
     }, []);
     const somarPreco = (preco) => {
         if (InputCompra.quantidade) {
-            return preco = preco * InputCompra.quantidade;
+            return (preco = preco * InputCompra.quantidade).toFixed(2);
         }
     }
     const ShowCard = () => {
@@ -69,7 +77,50 @@ function ShowProduto() {
         const cardDeCompra = $("#div-card-compra");
         cardDeCompra.addClass("d-none");
     }
-    console.log(InputCompra);
+    const validar = () => {
+        InputCompra.precoTotal = somarPreco(produto.preco);
+        const campos = [
+            InputCompra.idProduto,
+            InputCompra.quantidade,
+            InputCompra.precoTotal,
+            InputCompra.nome,
+            InputCompra.sobrenome,
+            InputCompra.email,
+            InputCompra.numeroCartao,
+            InputCompra.nomeCartao,
+            InputCompra.validadeCartao
+        ]
+
+        const vazios = campos.filter(a => a == "");
+        if (vazios.length > 0) {
+            alert("Ainda há campos não preenchidos");
+        } else {
+            if (fetchCreate(InputCompra)) {
+                console.log(InputCompra);
+                alert(`Compra feita com sucesso! ${InputCompra.entregarEmCasa ? "Em breve chegara em sua casa" : "Busque na loja "}`);
+                window.location.href = "/";
+            } else {
+                console.log("error");
+            }
+        }
+    }
+    const disableInputs = () => {
+        const $inputs = $("[entregar-em-casa-input]");
+        const resetarValor = (element) => {
+            if (!InputCompra.entregarEmCasa) {
+                element.value = "";
+                InputCompra.rua = "";
+                InputCompra.numero = "";
+                InputCompra.bairro = "";
+                InputCompra.complemento = "";
+                InputCompra.estado = "";
+                InputCompra.cidade = "";
+                InputCompra.cep = "";
+            }
+        }
+        $inputs.each((index, element) => { resetarValor(element) });
+    }
+    useEffect(disableInputs, [InputCompra.entregarEmCasa]);
     return (
         <PublicLayout>
             <div className="container my-5 d-flex justify-content-center">
@@ -126,13 +177,13 @@ function ShowProduto() {
                             <div className="mb-3">
                                 <label for={"nomeSobrenome"} className={"form-label"}>Nome e sobrenome: </label>
                                 <div className="d-flex">
-                                    <input name={"nome"} type={"text"} placeholder={"Nome"} className={"form-control"} onChange={handleInputCompra} />
-                                    <input name={"sobrenome"} type={"text"} placeholder={"Sobrenome"} className={"form-control"} onChange={handleInputCompra} />
+                                    <input name={"nome"} type={"text"} placeholder={"Nome"} className={"form-control"} onChange={handleInputCompra} autoComplete={"none"} />
+                                    <input name={"sobrenome"} type={"text"} placeholder={"Sobrenome"} className={"form-control"} onChange={handleInputCompra} autoComplete={"none"} />
                                 </div>
                             </div>
                             <div className="mb-3">
                                 <label for={"email"} className={"form-label"}>Email: </label>
-                                <input id="email" name="email" type={"email"} className="form-control" onChange={handleInputCompra} />
+                                <input id="email" name="email" type={"email"} className="form-control" onChange={handleInputCompra} autoComplete={"none"} />
                             </div>
                         </section>
                         <hr />
@@ -157,25 +208,25 @@ function ShowProduto() {
                                 <div className="mb-3">
                                     <label>Rua, Numero, Bairro</label>
                                     <div className="d-flex">
-                                        <input name={"rua"} placeholder={"Rua"} type={"text"} className="form-control" onChange={handleInputCompra} value={InputCompra.rua} />
-                                        <input name={"numero"} placeholder={"Numero"} type={"number"} className="form-control" onChange={handleInputCompra} value={InputCompra.numero} min="1" />
-                                        <input name={"bairro"} placeholder={"Bairro"} type={"text"} className="form-control" onChange={handleInputCompra} value={InputCompra.bairro} />
+                                        <input name={"rua"} placeholder={"Rua"} type={"text"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
+                                        <input name={"numero"} placeholder={"Numero"} type={"number"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} min="1" disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
+                                        <input name={"bairro"} placeholder={"Bairro"} type={"text"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
                                     </div>
                                 </div>
                                 <div className="mb-3">
                                     <label for={"complemento"}>Complemento</label>
-                                    <input name={"complemento"} type={"text"} className="form-control" onChange={handleInputCompra} value={InputCompra.complemento} />
+                                    <input name={"complemento"} type={"text"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
                                 </div>
                                 <div className="mb-3">
                                     <label>Cidade e Estado</label>
                                     <div className="d-flex">
-                                        <input name={"cidade"} placeholder={"Cidade"} type={"text"} className="form-control" onChange={handleInputCompra} value={InputCompra.cidade} />
-                                        <input name={"estado"} placeholder={"Estado"} type={"text"} className="form-control" onChange={handleInputCompra} value={InputCompra.estado} maxLength={"2"} />
+                                        <input name={"cidade"} placeholder={"Cidade"} type={"text"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
+                                        <input name={"estado"} placeholder={"Estado"} type={"text"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} maxLength={"2"} disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
                                     </div>
                                 </div>
                                 <div className="mb-3">
                                     <label for={"cep"}>CEP: </label>
-                                    <input name={"cep"} type={"text"} className="form-control" onChange={handleInputCompra} value={InputCompra.cep} id="cep" maxLength={"8"} />
+                                    <input name={"cep"} type={"text"} className="form-control" entregar-em-casa-input="" onChange={handleInputCompra} id="cep" maxLength={"9"} disabled={!InputCompra.entregarEmCasa} autoComplete={"none"} />
                                 </div>
                             </div>
                         </section>
@@ -186,15 +237,15 @@ function ShowProduto() {
                                 <section>
                                     <div className="mb-3">
                                         <span className="btn btn-primary mb-3">Cartão</span>
-                                        <input type={"number"} name={"numeroCartao"} className={"form-control"} placeholder={"Numero do cartão"} onChange={handleInputCompra} />
+                                        <input type={"number"} name={"numeroCartao"} className={"form-control"} placeholder={"Numero do cartão"} onChange={handleInputCompra} autoComplete={"none"} />
                                     </div>
                                     <div className="mb-3">
-                                        <input type={"text"} className={"form-control"} placeholder={"Nome inteiro"} name="nomeCartao" onChange={handleInputCompra} />
+                                        <input type={"text"} className={"form-control"} placeholder={"Nome inteiro"} name="nomeCartao" onChange={handleInputCompra} autoComplete={"none"} />
                                     </div>
                                     <div className="mb-3">
-                                        <input type={"text"} className={"form-control"} placeholder={"validade: MM/AA"} name="validadeCartao" onChange={handleInputCompra} />
+                                        <input type={"text"} className={"form-control"} placeholder={"validade: MM/AA"} name="validadeCartao" onChange={handleInputCompra} maxLength="5" autoComplete={"none"} />
                                     </div>
-                                    <button className="btn btn-danger">
+                                    <button className="btn btn-danger" onClick={validar}>
                                         Pagar
                                     </button>
                                 </section>
