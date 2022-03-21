@@ -26,13 +26,18 @@ function SideBar() {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/admin/lixeira"} className={"nav-link text-white"}>
-                        Lixeira
+                    <NavLink to={"/admin/registros"} className={"nav-link text-white"}>
+                        Registros
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/admin/registros"} className={"nav-link text-white"}>
-                        Registros
+                    <NavLink to={"/admin/estoque"} className={"nav-link text-white"}>
+                        Estoque
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to={"/admin/lixeira"} className={"nav-link text-white"}>
+                        Lixeira
                     </NavLink>
                 </li>
             </ul>

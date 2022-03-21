@@ -13,7 +13,8 @@ function CreateUpdateProdutos({ title, button }) {
         preco: "",
         categoria: "",
         foto: "",
-        descricao: ""
+        descricao: "",
+        estoque: 1,
     });
     const [categorias, setCategoria] = useState([]);
     const { idProduto } = useParams();
@@ -175,6 +176,10 @@ function CreateUpdateProdutos({ title, button }) {
                         <textarea className="form-control" onChange={handleFormValues} name={"descricao"} value={InputValues.descricao}>
 
                         </textarea>
+                    </div>
+                    <div className="mb-3">
+                        <label for="estoque" className="form-label">Estoque</label>
+                        <input name="estoque" id="estoque" className="form-control" onChange={handleFormValues} value={InputValues.estoque} type={"number"} />
                     </div>
                     <button type="button" className="btn btn-primary" onClick={submitForm}>{button}</button>
                 </form>

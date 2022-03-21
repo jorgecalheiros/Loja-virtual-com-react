@@ -14,6 +14,7 @@ import ShowProdutoAdmin from "../Components/Admin/ShowProdutoAdmin";
 import ProdutosTrashAdmin from "../Pages/Admin/ProdutosTrashAdmin";
 import RegistroAdmin from "../Pages/Admin/RegistrosAdmin";
 import ShowRegistros from "../Pages/Admin/ShowRegistros";
+import Estoque from "../Pages/Admin/Estoque";
 
 
 function Router() {
@@ -34,6 +35,7 @@ function Router() {
             <Route path="/admin/update/categoria/:idCategoria" element={<CreateUpdateCategoria title={"Alterar categoria"} button={"Alterar"} />} />
             <Route path="/admin/registros" element={<RegistroAdmin />} />
             <Route path="/admin/registros/:idRegistro" element={<ShowRegistros />} />
+            <Route path="/admin/estoque" element={<Estoque />} />
         </Routes>
     )
 }

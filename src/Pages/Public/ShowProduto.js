@@ -94,6 +94,8 @@ function ShowProduto() {
         const vazios = campos.filter(a => a == "");
         if (vazios.length > 0) {
             alert("Ainda há campos não preenchidos");
+        } else if (InputCompra.quantidade > produto.estoque) {
+            alert(`O limite de quantidade é: ${produto.estoque}`)
         } else {
             if (fetchCreate(InputCompra)) {
                 console.log(InputCompra);
@@ -157,10 +159,10 @@ function ShowProduto() {
                     <hr />
                     <div className="card-body overflow-auto --h-450px">
                         <section>
-                            <h5>Produto: {produto.nome}</h5> <p className="text-muted">Preço: {produto.preco} R$</p>
+                            <h5>Produto: {produto.nome}</h5> <p className="text-muted">Preço: {produto.preco} R$</p><p className="text-muted">Em estoque: {produto.estoque}</p>
                             <div className="mb-3">
                                 <label for={"quantidade"} className={"form-label"}> Insira a quantidade</label>
-                                <input className="form-control" id={"quatidade"} name="quantidade" type={"number"} onChange={handleInputCompra} max={10} min={1} value={InputCompra.quantidade} />
+                                <input className="form-control" id={"quatidade"} name="quantidade" type={"number"} onChange={handleInputCompra} max={produto.estoque} min={1} value={InputCompra.quantidade} />
                             </div>
                             <div className="mb-3">
                                 <input name="entregarEmCasa" id="entregarEmCasa" className="form-check-input" type={"checkbox"} onChange={handleInputCompra} value={true} />
