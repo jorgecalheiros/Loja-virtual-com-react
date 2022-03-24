@@ -11,6 +11,15 @@ class RegistroService {
         }
     }
 
+    async list() {
+        try {
+            const response = await Api.get(`/api/registros/listAllRegistros/0/`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
     async getTrashed(params) {
         try {
             const response = await Api.get(`/api/registros/onlytrashed/0?${params}`);

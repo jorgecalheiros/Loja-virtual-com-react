@@ -15,6 +15,7 @@ import ProdutosTrashAdmin from "../Pages/Admin/ProdutosTrashAdmin";
 import RegistroAdmin from "../Pages/Admin/RegistrosAdmin";
 import ShowRegistros from "../Pages/Admin/ShowRegistros";
 import Estoque from "../Pages/Admin/Estoque";
+import Dashboard from "../Pages/Admin/Dashboard";
 
 
 function Router() {
@@ -36,6 +37,7 @@ function Router() {
             <Route path="/admin/registros" element={<RegistroAdmin />} />
             <Route path="/admin/registros/:idRegistro" element={<ShowRegistros />} />
             <Route path="/admin/estoque" element={<Estoque />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
         </Routes>
     )
 }
