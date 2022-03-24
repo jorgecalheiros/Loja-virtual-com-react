@@ -31,6 +31,16 @@ code {
   width: 280px;
 }
 
+.--bg-blue{
+  background-color: blue;
+  width: min-content;
+}
+
+.--bg-green{
+  background-color: #22F1B7;
+  width: min-content;
+}
+
 @media screen and (max-width:500px) {
   .--d-sm-none{
     display: none;
