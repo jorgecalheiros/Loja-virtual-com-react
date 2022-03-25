@@ -6,15 +6,18 @@ import $ from "jquery";
 import AdmLayout from "../../Layouts/AdmLayout.js";
 import GraficoPizza from "../../Components/Admin/GraficoPizza.js";
 import RegistroService from "../../Services/RegistroService";
+import GraficoColuna from "../../Components/Admin/GraficoColunas.js";
 
 function Dashboard() {
     const [registros, setRegistros] = useState([]);
     const [tamanhoRegistros, setTamanhoRegistro] = useState(0);
     const [tamanhoRegistrosMesPassado, setTamanhoRegistrosMesPassado] = useState([]);
-    const [meta, setMeta] = useState(20);
+    const [meta, setMeta] = useState(50);
+    const [ganho, setGanhando] = useState(0);
     const [diario, setDiario] = useState(0);
     const [semanal, setSemanal] = useState(0);
     const [mensal, setMensal] = useState(0);
+    const [maisVendidos, setMaisVendidos] = useState([]);
     const mesAtual = new Date().getMonth() + 1;
     const getMoth = (data) => {
         if (data) {
@@ -36,10 +39,29 @@ function Dashboard() {
         const [data, error] = await RegistroService.list();
         if (!error) {
             setRegistros(data.list);
+            let valorganho = 0;
+            const dias = new Set();
             const registrosMesAtual = data.list.filter(registro => {
                 const mes = getMoth(registro.created_at);
                 return mes == mesAtual;
             });
+            const percorrerDias = (dia) => {
+                const registros = registrosMesAtual.filter(registro => getDay(registro.created_at) == dia);
+                return registros;
+            }
+            registrosMesAtual.map(registro => {
+                const dia = getDay(registro.created_at);
+                dias.add(dia);
+            });
+            dias.forEach(dia => {
+                let somaValores = 0;
+                const registros = percorrerDias(dia);
+                registros.map(registro => {
+                    somaValores = somaValores + parseFloat(registro.precoTotal);
+                });
+                valorganho = valorganho + somaValores;
+            })
+            setGanhando(valorganho.toFixed(2));
             setTamanhoRegistro(registrosMesAtual.length);
         }
     };
@@ -47,7 +69,6 @@ function Dashboard() {
         const [data, error] = await RegistroService.list();
         if (!error) {
             const mesPassado = mesAtual - 1;
-            let valorDiarioTotal = 0;
             const semana = new Set();
             const dias = new Set();
             const registrosMesPassado = data.list.filter(registro => {
@@ -74,7 +95,7 @@ function Dashboard() {
                         valorDiario = somaPrecos;
                     }
                 })
-                setDiario(valorDiario);
+                setDiario(valorDiario.toFixed(2));
 
                 registrosMesPassado.map(registros => {
                     const dia = getDay(registros.created_at);
@@ -88,7 +109,7 @@ function Dashboard() {
                     registros.map(registro => somaPrecos = somaPrecos + parseFloat(registro.precoTotal));
                     valorSemanal = valorSemanal + somaPrecos;
                 })
-                setSemanal(valorSemanal);
+                setSemanal(valorSemanal.toFixed(2));
 
                 dias.forEach(dia => {
                     let somaPrecos = 0;
@@ -96,12 +117,19 @@ function Dashboard() {
                     registros.map(registro => somaPrecos = somaPrecos + parseFloat(registro.precoTotal));
                     valorMensal = valorMensal + somaPrecos;
                 })
-                setMensal(valorMensal);
+                setMensal(valorMensal.toFixed(2));
 
             }
             setTamanhoRegistrosMesPassado(registrosMesPassado.length);
         }
     }
+    const getMaisVendidos = async () => {
+        const [data, error] = await RegistroService.produtosMaisVendidos();
+        if (!error) {
+            setMaisVendidos(data.list);
+        }
+    }
+    useEffect(getMaisVendidos, []);
     useEffect(getRegistros, []);
     useEffect(getRegistrosMesPassado, []);
     useEffect(() => {
@@ -125,8 +153,8 @@ function Dashboard() {
                     <h1>Dashboard</h1>
                 </header>
                 <hr />
-                <section>
-                    <div className="card">
+                <section className="d-flex flex-wrap">
+                    <div className="card w-50 flex-grow-1 mx-2 my-2">
                         <div className="card-body d-flex justify-content-between">
                             <header>
                                 <FontAwesomeIcon icon={faTshirt} />
@@ -148,7 +176,7 @@ function Dashboard() {
                             </div>
                         </div>
                         <div className="card-body d-flex justify-content-between align-items-center">
-                            <h5>Metas de vendas por semana</h5>
+                            <h5>Metas de vendas por mes</h5>
                             <div className="d-flex align-items-center">
                                 <div>
                                     <div className="d-flex align-items-center"><span className=""><strong>Meta:</strong></span><div className="--bg-blue text-white px-2 mx-2 my-1 rounded w-100">{meta} vendas</div></div>
@@ -163,6 +191,25 @@ function Dashboard() {
                                 <p className="text-success"><strong>Parabéns !!!</strong></p>
                             </div>
                         }
+                    </div>
+                    <div className="card h-25  mx-2 my-2">
+                        <div className="card-body">
+                            <div className="my-2">
+                                <h3 className="mb-3">Ganhando no momento: </h3>
+                                <hr />
+                                <h3 className="text-success light">{ganho}R$</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card mx-2 my-2 flex-grow-1">
+                        <div className="card-body">
+                            <h3>Produtos mais vendidos: </h3>
+                            <hr />
+                            <div className="d-flex">
+                                <GraficoColuna data={maisVendidos} dataKey={"quantidade"} color={"blue"} />
+                                <GraficoColuna data={maisVendidos} dataKey={"precoTotal"} color={"red"} />
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div >

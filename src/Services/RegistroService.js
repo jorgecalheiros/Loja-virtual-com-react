@@ -11,6 +11,15 @@ class RegistroService {
         }
     }
 
+    async produtosMaisVendidos() {
+        try {
+            const response = await Api.get(`/api/produtosMaisVendidos`);
+            return [response.data, false];
+        } catch (error) {
+            return [null, error];
+        }
+    }
+
     async list() {
         try {
             const response = await Api.get(`/api/registros/listAllRegistros/0/`);

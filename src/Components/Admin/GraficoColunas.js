@@ -18,7 +18,7 @@ const data = [
     { name: 'Page G', pv: 4300, amt: 2100 },
 ];
 
-function GraficoColuna() {
+function GraficoColuna({ data, dataKey, color }) {
     return (
         <LineChart
             width={600}
@@ -27,15 +27,15 @@ function GraficoColuna() {
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
             <Line
-                type='step'
-                dataKey='pv'
-                stroke='#8884d8'
+                type=''
+                dataKey={dataKey}
+                stroke={color}
                 activeDot={{ r: 8 }}
             />
             <CartesianGrid strokeDasharray='3 3' />
             <Tooltip />
             <YAxis />
-            <XAxis dataKey='name' />
+            <XAxis dataKey='produtos.nome' />
             <Legend />
         </LineChart>
     )
