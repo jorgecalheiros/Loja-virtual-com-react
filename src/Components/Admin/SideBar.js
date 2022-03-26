@@ -11,7 +11,7 @@ function SideBar() {
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
                 <li>
-                    <NavLink to={"/admin"} className={"nav-link text-white"}>
+                    <NavLink to={"/admin/dashboard"} className={"nav-link text-white"}>
                         DashBord
                     </NavLink>
                 </li>
@@ -23,6 +23,16 @@ function SideBar() {
                 <li>
                     <NavLink to={"/admin/categorias"} className={"nav-link text-white"}>
                         Categorias
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to={"/admin/registros"} className={"nav-link text-white"}>
+                        Registros
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to={"/admin/estoque"} className={"nav-link text-white"}>
+                        Estoque
                     </NavLink>
                 </li>
                 <li>
