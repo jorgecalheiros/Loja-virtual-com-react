@@ -6,7 +6,9 @@
 - Node
 
 ### Como rodar a aplicação
-Execute o comando `npm start` no terminal do projeto
+
+1. Dentro do repositório `laravel-ecommmerce-api` exeucte o comando `php artisan serve`
+2. Então no repositorio `Loja-virtual-com-react` execute o comando `npm start` no terminal do projeto
 
 ### Rotas da aplicação
 
