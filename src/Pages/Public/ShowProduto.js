@@ -131,7 +131,7 @@ function ShowProduto() {
                     <img src={`http://localhost:8000/api/produtos/image/${produto.foto}`} className="card-img-top" alt="..." />
                     <div className="card-body">
                         <h5 className="card-title">{produto.nome}</h5>
-                        <p className="card-text">
+                        <p className="card-text  overflow-hidden --h-100">
                             {produto.descricao}
                         </p>
                     </div>
