@@ -76,7 +76,7 @@ function CreateUpdateProdutos({ title, button }) {
         const [data, error] = await ProdutoService.create(dataForm);
 
         if (!error) {
-            alert("Produto criando com sucesso!");
+            alert("Produto criado com sucesso!");
             window.location.href = "/admin/produtos";
         }
     }
